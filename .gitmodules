@@ -1,0 +1,3 @@
+[submodule "lib/SyntaxHighlighter"]
+	path = lib/SyntaxHighlighter
+	url = https://github.com/nyteshade/SyntaxHighlighter.git

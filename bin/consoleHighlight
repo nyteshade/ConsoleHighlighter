@@ -1,0 +1,60 @@
+#!/usr/bin/env node
+
+var fs=require('fs'), 
+    path=require('path'),
+    source = path.resolve(path.join('.', 'samp.js')),
+    Brush, brush, extension, code,
+
+    BASE = path.resolve(path.join(path.dirname(__filename), '..')),
+    SHJS = path.resolve(path.join(BASE, 'lib', 'SyntaxHighlighter', 'scripts'));
+    CHJS = path.resolve(path.join(BASE, 'lib', 'js'));
+
+// Load the SyntaxHighlighter package core class into the
+// global scope
+global.SyntaxHighlighter = require(path.join(SHJS, 'shCore.js'))
+    .SyntaxHighlighter;
+
+// Load the XRegExp file into scope
+global.XRegExp = require(path.join(CHJS, 'XRegExp.node.js')).XRegExp;
+
+// Determine file to use
+if (process.argv.length > 2) {
+  try {
+    source = path.resolve(process.argv[2]);
+  }
+  catch (e) {}
+}
+else {
+  console.log('Usage: %s /path/to/source/file', path.basename(process.argv[1]));
+  process.exit(0);
+}
+
+// Load brushes
+var brushes = fs.readdirSync(SHJS);
+brushes.forEach(function(o, i, a) {
+  if (/shBrush.*\.js/.exec(o)) {
+    Brush = require(path.join(SHJS, o)).Brush;
+
+    // Determine if this brush is good for our source
+    extension = path.extname(source.toLowerCase());
+    Brush.aliases.forEach(function(o, i, a) {
+      if (brush) { return; }
+      if (o.toLowerCase() === extension.substring(1).toLowerCase()) {
+        brush = new Brush();
+      }
+    });
+  }
+});
+
+// Get code from our source
+code = fs.readFileSync(source, 'utf8').toString();
+
+if (brush) {  
+  console.log(brush.process(code, {
+    'tab-size': 2,
+    'smart-tabs': true
+  }));
+}
+else {
+  console.log(code);
+}
