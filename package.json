@@ -8,7 +8,7 @@
   },
   "main": "./lib/main",
   "bin": {
-    "replaceme": "./bin/consoleHighlight"
+    "consoleHighlight": "./bin/consoleHighlight"
   },
   "dependencies": {},
   "devDependencies": {},
