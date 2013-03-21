@@ -15,9 +15,10 @@ if (process.argv.length > 2) {
   if (process.argv[2].toLowerCase() === "update") {
     var proc = require('child_process'),
         cwd = process.cwd();
-    process.chdir(BASE);
+
+    process.chdir(path.join(BASE, 'lib', 'SyntaxHighlighter'));
     console.log('Updating syntax highlighter code...');
-    proc.exec('git submodule foreach --recursive git pull', function(i,o,e) {
+    proc.exec('git pull', function(i,o,e) {
       console.log('\n%s\nComplete', o);
       process.chdir(cwd);
       process.exit(0);

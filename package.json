@@ -2,7 +2,7 @@
   "author": "Gabriel Harrison",
   "name": "consolehighlighter",
   "description": "Leverages Alex Gorbatchev's Syntax Highlighter and provides similar facilities for ANSI terminals.",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "repository": {
     "url": "https://github.com/nyteshade/ConsoleHighlighter"
   },
@@ -17,6 +17,6 @@
     "node": "*"
   },
   "scripts": {
-    "postinstall": "git clone https://github.com/nyteshade/SyntaxHighlighter lib/SyntaxHighlighter"
+    "postinstall": "scripts/install.js"
   }
 }
