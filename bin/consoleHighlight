@@ -12,6 +12,19 @@ ch = require(BASE);
 
 // Determine file to use
 if (process.argv.length > 2) {
+  if (process.argv[2].toLowerCase() === "update") {
+    var proc = require('child_process'),
+        cwd = process.cwd();
+    process.chdir(BASE);
+    console.log('Updating syntax highlighter code...');
+    proc.exec('git submodule foreach --recursive git pull', function(i,o,e) {
+      console.log('\n%s\nComplete', o);
+      process.chdir(cwd);
+      process.exit(0);
+    });
+    return;
+  }
+
   try {
     source = path.resolve(process.argv[2]);
     extension = path.extname(source).substring(1);
@@ -30,12 +43,22 @@ else {
 }
 
 if (showUsage) {
-  var lines = ['Known types: '], lineNo = 0, i, comma;
+  var lines = ['\x1b[1mKnown types:\x1b[0m '], lineNo = 0, i, comma,
+  exe = path.basename(process.argv[1]), blue = '\x1b[34m',
+  clear = '\x1b[0m', bold = '\x1b[1m', nobold = '\x1b[0m',
+  underlined = '\x1b[4m';
 
-  console.log('Usage: %s <file> [type]', path.basename(process.argv[1]));
-  console.log('  <file> - path to the file to highlight');
-  console.log('  [type] - alternate file extension (without period)');
-  console.log('           in order to override detected brush highlighter');
+  console.log('\n%sUsage:%s %s <file|update> [type]', bold, nobold, exe);
+  console.log('  %s<%sfile%s>%s   - path to the file to highlight',
+      blue, clear, blue, clear);
+  console.log('  %s[%supdate%s]%s - update syntax engine',
+      blue, clear, blue, clear);
+  console.log('  %s[%stype%s]%s   - alternate file extension (without period)',
+      blue, clear, blue, clear);
+  console.log('             in order to override detected brush highlighter');
+  console.log('             (note does nothing if update supplied)\n');
+  console.log('Alternatively, specifying "update" instead of a file');
+  console.log('will cause the syntax highlighting brushes to be updated');
   
   types = ch.BrushManager.getKnownTypes();
   for (i = 0; i < types.length; i++) {
