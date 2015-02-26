@@ -1,5 +1,5 @@
 {
-  "author": "Gabriel Harrison",
+  "author": "Brielle Harrison",
   "name": "consolehighlighter",
   "description": "Leverages Alex Gorbatchev's Syntax Highlighter and provides similar facilities for ANSI terminals.",
   "version": "0.1.5",
